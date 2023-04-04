@@ -44,7 +44,10 @@ def index():
     end_date = today + datetime.timedelta(days=30*8) # add 8 months
     start_date_def = start_date.strftime('%Y-%m-%d')
     end_date_def = end_date.strftime('%Y-%m-%d')
-    cal = r.get(f'https://itsar.registrodiclasse.it/geopcfp2/json/fullcalendar_events_alunno.asp?Oggetto=idAlunno&idOggetto=2538&editable=false&z=1680542264288&start={start_date_def}&end={end_date_def}&_=1680542231937').text.strip()
+    try:
+        cal = r.get(f'https://itsar.registrodiclasse.it/geopcfp2/json/fullcalendar_events_alunno.asp?Oggetto=idAlunno&idOggetto=2538&editable=false&z=1680542264288&start={start_date_def}&end={end_date_def}&_=1680542231937').text.strip()
+    except:
+        return jsonify({'error': 'could not access'}), 500
     calendario = json.loads(cal)
     for event in calendario:
         del event['id']
