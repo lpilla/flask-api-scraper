@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 import requests
 from bs4 import BeautifulSoup
+import datetime
 
 
 app = Flask(__name__)
@@ -37,13 +38,29 @@ def index():
             grade = 31
         grade = int(grade)
         grades.append(grade)
-    media_voti = sum(grades) / len(grades)
     materia_voto = res = dict(zip(subjects, grades))
+    today = datetime.date.today()
+    start_date = today - datetime.timedelta(days=30*8) # subtract 8 months
+    end_date = today + datetime.timedelta(days=30*8) # add 8 months
+    start_date_def = start_date.strftime('%Y-%m-%d')
+    end_date_def = end_date.strftime('%Y-%m-%d')
+    cal = r.get(f'https://itsar.registrodiclasse.it/geopcfp2/json/fullcalendar_events_alunno.asp?Oggetto=idAlunno&idOggetto=2538&editable=false&z=1680542264288&start={start_date_def}&end={end_date_def}&_=1680542231937').text.strip()
+    calendario = json.loads(cal)
+    for event in calendario:
+        del event['id']
+        del event['borderColor']
+        del event['backgroundColor']
+        del event['rendering']
+        del event['overlap']
+        del event['editable']
+        del event['ClasseEvento']
+        del event['tooltip']
+        del event['icon']
     final_result = {
-        'voti': [materia_voto],
-        'media': media_voti
+        'voti': materia_voto,
+        'calendario': calendario
     }
-    return jsonify(final_result)
+        return jsonify(final_result)
 
 if __name__ == '__main__':
   app.run(port=5000)
