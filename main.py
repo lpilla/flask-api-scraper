@@ -60,7 +60,7 @@ def index():
         'voti': materia_voto,
         'calendario': calendario
     }
-        return jsonify(final_result)
+    return jsonify(final_result)
 
 if __name__ == '__main__':
   app.run(port=5000)
