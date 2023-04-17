@@ -13,7 +13,7 @@ def index():
         username = request.json['username']
         password = request.json['password']
     except KeyError:
-        return jsonify({'error': 'username or password missing'}), 400
+        return jsonify({'error': 'username or password missing'}), 401
     r = requests.Session()
     login_data = {
         'username': username,
@@ -45,7 +45,7 @@ def index():
         subjects.append(subject)
         grade = row.findChildren()[2].findChildren()[2].b.text.strip()
         if (grade == "30 lode"):
-            grade = 31
+            grade = 32
         grade = int(grade)
         grades.append(grade)
     materia_voto = res = dict(zip(subjects, grades))
