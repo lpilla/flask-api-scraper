@@ -45,7 +45,7 @@ def index():
         subjects.append(subject)
         grade = row.findChildren()[2].findChildren()[2].b.text.strip()
         if (grade == "30 lode"):
-            grade = 31
+            grade = 32
         grade = int(grade)
         grades.append(grade)
     materia_voto = res = dict(zip(subjects, grades))
