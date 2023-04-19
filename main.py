@@ -225,10 +225,16 @@ def index():
         materia = item['Materia']
         presenza = int(item['MinutiPresenza'].split()[0])
         assenza = int(item['MinutiAssenza'].split()[0])
+        date = item['Data']
+        ora_inizio = item['DataOraInizio']
+        ora_fine = item['DataOraFine']
         presenza = {
             "materia": materia,
             "ore_presenza": presenza,
-            "ore_assenza": assenza
+            "ore_assenza": assenza,
+            "date": date,
+            "ora_inizio": ora_inizio,
+            "ora_fine": ora_fine
         }
         presenze_assenze.append(presenza)
 
