@@ -217,18 +217,20 @@ def index():
     pres5 = pres4.replace('<a href="javascript: ModalLezione(', '')
     pres6 = pres5.replace('class="btn btn-xs btn-danger btn-block jq-tooltip" Title="Assente<br>Apri scheda lezione">A</a>"', '')
     pres7 = pres6.replace('class="btn btn-xs btn-success btn-block jq-tooltip" Title="Presente<br>Apri scheda lezione">P</a>"', '')
-    pres8 = pres7.replace('Ã\xa0', '')
+    pres8 = pres7.replace('Ã\xa0', 'à').replace(' h', '').replace(' min', '')
     data = json.loads(pres8)['data']
     presenze_assenze = []
 
     for item in data:
+        codice_materia = item['CodiceMateria']
         materia = item['Materia']
-        presenza = int(item['MinutiPresenza'].split()[0])
-        assenza = int(item['MinutiAssenza'].split()[0])
+        presenza = float(item['MinutiPresenza'].replace(' ', '.'))
+        assenza = float(item['MinutiAssenza'].replace(' ', '.'))
         date = item['Data']
         ora_inizio = item['DataOraInizio']
         ora_fine = item['DataOraFine']
         presenza = {
+            "codice_materia": codice_materia,
             "materia": materia,
             "ore_presenza": presenza,
             "ore_assenza": assenza,
